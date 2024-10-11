@@ -1,30 +1,45 @@
 package Controller;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
+import Model.DAO.BusDAO;
 import Model.DAO.ClienteDAO;
+import Model.Entity.Bus;
 import Model.Entity.Cliente;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/ClienteServlet")
-public class ClienteServlet extends HttpServlet {
+@WebServlet(name = "helloServlet", value = "/BusServlet")
+public class BusController extends HttpServlet {
     private String message;
     private ClienteDAO clienteDAO;
+    private BusDAO busDAO;
 
     public void init() {
 
         clienteDAO = new ClienteDAO();
+        busDAO =  new BusDAO();
     }
 
-    public void listar(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-        List<Cliente> clientes = clienteDAO.listarClientes();
+    public void listarBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+        String jornada = req.getParameter("jornada");
+        List<Object[]> buses = new ArrayList<>();
 
-        req.setAttribute("clientes", clientes);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarClientes.jsp");
+        if (jornada != null && !jornada.isEmpty()) {
+
+            buses = busDAO.listarBusesPorJornada(jornada);
+            System.out.println("Contenido de buses: " + buses);
+            // O, si prefieres un conteo
+            System.out.println("Número de buses encontrados: " + buses.size());
+        }
+
+
+        req.setAttribute("buses", buses);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarBus.jsp");
         dispatcher.forward(req, resp);
     }
     public void eliminar(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
@@ -76,8 +91,8 @@ public class ClienteServlet extends HttpServlet {
     public void ruteador(HttpServletRequest req, HttpServletResponse resp) throws  ServletException, IOException {
         String ruta = (req.getParameter("ruta") == null)? "listarCliente": req.getParameter("ruta");
         switch (ruta) {
-            case "listarCliente":
-                this.listar(req, resp);
+            case "seleccionarJornada":
+                this.listarBus(req, resp);
                 break;
             case "agregarCliente":
                 this.agregar(req, resp);
