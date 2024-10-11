@@ -95,4 +95,5 @@ public class Bus implements Serializable {
     public void setRuta(Ruta ruta) {
         this.ruta = ruta;
     }
+
 }

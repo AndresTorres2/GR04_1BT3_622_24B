@@ -62,7 +62,7 @@
     <p><strong>Fecha:</strong> ${bus.fecha}</p>
     <p><strong>Asientos:</strong> ${bus.asientosOcupados}/${bus.capacidad}</p>
 
-    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?busId=${bus.codigo}">Realizar reserva de asiento</a>
+    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=formularioReserva&busId=${bus.codigo}">Realizar reserva de asiento</a>
 </div>
 </body>
 </html>
