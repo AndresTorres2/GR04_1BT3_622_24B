@@ -84,7 +84,7 @@
                 <p>Capacidad: ${bus[1]}</p> <!-- Capacidad -->
                 <p>Origen: ${bus[2]}</p> <!-- Origen -->
                 <p>Destino: ${bus[3]}</p> <!-- Destino -->
-                <a href="">Ver detalles</a>
+                <a href="${pageContext.request.contextPath}/BusServlet?ruta=verDetalles&id=${bus[4]}">Ver detalles</a>
             </div>
         </c:forEach>
     </div>

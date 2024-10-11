@@ -14,7 +14,7 @@ public class BusDAO extends GenericDAO {
         List<Object[]> resultList = new ArrayList<>();
         try {
 
-            String sql = "SELECT b.horario, b.capacidad, r.origen, r.destino " +
+            String sql = "SELECT b.horario, b.capacidad, r.origen, r.destino , b.codigo " +
                     "FROM Bus b " +
                     "JOIN Ruta r ON b.ruta_id = r.idRuta " +
                     "WHERE b.jornada = :jornada";
@@ -35,7 +35,7 @@ public class BusDAO extends GenericDAO {
             return em.find(Bus.class, codigo);
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // Devolver null si ocurre algún error
+            return null;
         }
     }
 }

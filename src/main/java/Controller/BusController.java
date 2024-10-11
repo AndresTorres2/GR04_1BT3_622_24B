@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.DAO.BusDAO;
+import Model.DAO.CalleDAO;
 import Model.DAO.ClienteDAO;
 import Model.Entity.Bus;
+import Model.Entity.Calle;
 import Model.Entity.Cliente;
+import Model.Entity.Ruta;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -18,11 +21,13 @@ public class BusController extends HttpServlet {
     private String message;
     private ClienteDAO clienteDAO;
     private BusDAO busDAO;
+    private CalleDAO calleDAO;
 
     public void init() {
 
         clienteDAO = new ClienteDAO();
         busDAO =  new BusDAO();
+        calleDAO = new CalleDAO();
     }
 
     public void listarBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
@@ -40,20 +45,23 @@ public class BusController extends HttpServlet {
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarBus.jsp");
         dispatcher.forward(req, resp);
     }
-    public void eliminar(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-        String cedula = req.getParameter("cedula");
 
-        try {
-            clienteDAO.eliminarCliente(cedula);
-            resp.sendRedirect(req.getContextPath() + "/ClienteServlet?ruta=listarCliente");
+    public void verDetallesBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+        int idBus = Integer.parseInt(req.getParameter("id"));
+        Bus bus = busDAO.obtenerBusPorCodigo(idBus);
 
-        } catch (Exception e) {
-            // Manejar el error y redirigir a una página de error si es necesario
-            req.setAttribute("errorMessage", "Error al eliminar el cliente: " + e.getMessage());
-        }
+        Ruta ruta = bus.getRuta();
+        int idRuta= ruta.getIdRuta();
+        List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
+        ruta.setCalles(listaCalles);
+
+        req.setAttribute("bus", bus);
+        req.setAttribute("ruta", ruta);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("View/detallesBus.jsp");
+        dispatcher.forward(req, resp);
+
 
     }
-
 
 
 
@@ -69,6 +77,9 @@ public class BusController extends HttpServlet {
         switch (ruta) {
             case "seleccionarJornada":
                 this.listarBus(req, resp);
+                break;
+            case "verDetalles":
+                this.verDetallesBus(req, resp);
                 break;
                 default:
                     break;
