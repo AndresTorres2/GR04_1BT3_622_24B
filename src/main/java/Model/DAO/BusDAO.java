@@ -19,7 +19,6 @@ public class BusDAO extends GenericDAO {
                     "JOIN Ruta r ON b.ruta_id = r.idRuta " +
                     "WHERE b.jornada = :jornada";
 
-
             Query query = em.createNativeQuery(sql);
             query.setParameter("jornada", jornada);
 

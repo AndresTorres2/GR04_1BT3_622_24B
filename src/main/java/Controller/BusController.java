@@ -32,9 +32,7 @@ public class BusController extends HttpServlet {
         if (jornada != null && !jornada.isEmpty()) {
 
             buses = busDAO.listarBusesPorJornada(jornada);
-            System.out.println("Contenido de buses: " + buses);
-            // O, si prefieres un conteo
-            System.out.println("Número de buses encontrados: " + buses.size());
+
         }
 
 
@@ -55,31 +53,9 @@ public class BusController extends HttpServlet {
         }
 
     }
-    public void guardar(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
 
-        String cedula = req.getParameter("cedula");
-        String nombre = req.getParameter("nombre");
-        String apellido = req.getParameter("apellido");
-        String direccion = req.getParameter("direccion");
-        String numeroTelefono = req.getParameter("numeroTelefono");
-        Cliente nuevoCliente = new Cliente(cedula,nombre,apellido,direccion,numeroTelefono);
-        try {
-            clienteDAO.crearCliente(nuevoCliente);
 
-            resp.sendRedirect(req.getContextPath() + "/ClienteServlet?ruta=listarCliente");
 
-        } catch (Exception e) {
-            // Manejar el error y mostrar un mensaje adecuado
-            e.printStackTrace();
-            req.setAttribute("errorMessage", "Error al registrar el cliente: " + e.getMessage());
-
-        }
-    }
-
-    public void agregar(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-        String contextPath = req.getContextPath();
-        resp.sendRedirect(contextPath + "/View/ingresarCliente.jsp");
-    }
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.ruteador(req, resp);
@@ -93,18 +69,6 @@ public class BusController extends HttpServlet {
         switch (ruta) {
             case "seleccionarJornada":
                 this.listarBus(req, resp);
-                break;
-            case "agregarCliente":
-                this.agregar(req, resp);
-                break;
-            case "guardarCliente":
-                this.guardar(req, resp);
-                break;
-            case "actualizarCliente":
-                break;
-            case "eliminarCliente":
-                this.eliminar(req, resp);
-
                 break;
                 default:
                     break;
