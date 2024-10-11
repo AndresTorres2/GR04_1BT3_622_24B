@@ -90,5 +90,7 @@
     </div>
 
 </div>
+<a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=consultarReservas">Consultar Reservas</a>
+
 </body>
 </html>

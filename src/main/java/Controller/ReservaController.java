@@ -45,8 +45,17 @@ public class ReservaController extends HttpServlet {
             case "formularioReserva":
                 mostrarFormularioReserva(request, response);
                 break;
-            default:
+            case "consultarReservas":
+                System.out.println("ruteador");
                 listarReservas(request, response);
+                break;
+            case "detalleReserva":
+                mostrarReserva(request,response);
+                break;
+            case "cancelarReserva":
+                cancelarReserva(request,response);
+                break;
+            default:
                 break;
         }
     }
@@ -97,7 +106,39 @@ public class ReservaController extends HttpServlet {
 
 
     private void listarReservas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Lógica para listar las reservas (se puede implementar si es necesario)
+        List<Reserva> reservas = reservaDAO.obtenerTodasLasReservas();
+
+        if (reservas == null || reservas.isEmpty()) {
+            System.out.println("No se encontraron reservas.");
+            request.setAttribute("errorMessage", "No hay reservas disponibles.");
+        } else {
+            System.out.println("Reservas obtenidas: " + reservas.size());
+        }
+        request.setAttribute("reservas", reservas);
+
+        request.getRequestDispatcher("/View/consultarReservas.jsp").forward(request, response);
+
+    }
+    private void mostrarReserva(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String dia = request.getParameter("dia");
+        int idReserva = Integer.parseInt(request.getParameter("idReserva"));
+        Reserva reservaSeleccionada = reservaDAO.obtenerReservaPorId(idReserva);
+        System.out.println("Entre al metodo mostrar reserva");
+        request.setAttribute("dia",dia);
+        request.setAttribute("reserva", reservaSeleccionada);
+        request.getRequestDispatcher("/View/detallesReserva.jsp").forward(request, response);
+
+    }
+
+    private void cancelarReserva(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idReserva = Integer.parseInt(request.getParameter("idReserva"));
+        String dia = request.getParameter("dia");
+        reservaDAO.borrarReservaPorDiaYId(idReserva, dia);
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
+        response.sendRedirect(request.getContextPath() + "/ReservarAsientoServlet?action=consultarReservas");
+
     }
 }
 
