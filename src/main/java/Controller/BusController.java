@@ -6,10 +6,8 @@ import java.util.List;
 
 import Model.DAO.BusDAO;
 import Model.DAO.CalleDAO;
-import Model.DAO.ClienteDAO;
 import Model.Entity.Bus;
 import Model.Entity.Calle;
-import Model.Entity.Cliente;
 import Model.Entity.Ruta;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,13 +17,11 @@ import jakarta.servlet.annotation.*;
 @WebServlet(name = "helloServlet", value = "/BusServlet")
 public class BusController extends HttpServlet {
     private String message;
-    private ClienteDAO clienteDAO;
     private BusDAO busDAO;
     private CalleDAO calleDAO;
 
     public void init() {
 
-        clienteDAO = new ClienteDAO();
         busDAO =  new BusDAO();
         calleDAO = new CalleDAO();
     }
