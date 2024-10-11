@@ -81,7 +81,7 @@ public class ReservaController extends HttpServlet {
                 busDAO.actualizarAsientosOcupados(bus);
 
                 // Redirigir a la lista de buses
-                response.sendRedirect(request.getContextPath() + "/BusServlet" + bus.getJornada());
+                response.sendRedirect(request.getContextPath() + "/View/listarBus.jsp");
             } else {
                 // Redirigir igualmente si no hay asientos disponibles
                 response.sendRedirect(request.getContextPath() + "/View/listarBus.jsp");
@@ -100,4 +100,3 @@ public class ReservaController extends HttpServlet {
         // Lógica para listar las reservas (se puede implementar si es necesario)
     }
 }
-
