@@ -91,14 +91,20 @@ public class ReservaController extends HttpServlet {
         for (Integer idViaje : viajesIdList) {
             // Obtener el objeto Viaje a partir del ID
             Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViaje);
-            // Si se encuentra el viaje, agregarlo a la lista
+            
+
             if (viaje != null) {
                 viajesList.add(viaje);
             } else {
                 System.out.println("No se encontró el viaje con ID: " + idViaje);
             }
         }
+        for (Viaje viaje : viajesList) {
+            System.out.println("ID Viaje: " + viaje.getId() + ", Asientos Ocupados: " + viaje.getAsientosOcupados());
+        }
+
         request.setAttribute("viajesList", viajesList);
+
         request.getRequestDispatcher("/View/reservarAsiento.jsp").forward(request, response);
 
 

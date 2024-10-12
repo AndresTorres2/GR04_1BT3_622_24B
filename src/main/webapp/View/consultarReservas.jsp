@@ -67,9 +67,12 @@
     <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=4">Jueves</a>
     <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=5">Viernes</a>
   </div>
-
+  <c:set var="fechaAnterior" value="" />
   <c:forEach var="reserva" items="${reservas}">
-    <h2>Reservas para el día: <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/></h2>
+    <c:if test="${reserva.fecha != fechaAnterior}">
+      <h2>Reservas para el día: <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/></h2>
+      <c:set var="fechaAnterior" value="${reserva.fecha}" />
+    </c:if>
     <div class="reserva">
       <a  href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=detalleReserva&reservaId=${reserva.id}">
         <p><strong>Viaje #${reserva.viaje.id}</strong></p>

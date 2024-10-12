@@ -43,6 +43,7 @@ public class ViajeController extends HttpServlet {
         }
         req.setAttribute("jornada",jornada);
         req.setAttribute("viajes", viajes);
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarViajes.jsp");
         dispatcher.forward(req, resp);
     }
