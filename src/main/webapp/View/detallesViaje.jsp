@@ -58,10 +58,10 @@
 
     <h3>Origen: ${viaje.ruta.origen}</h3>
     <h3>Destino: ${viaje.ruta.destino}</h3>
-    <h4>Ruta:</h4>  <!-- TODO: arreglar para que muestre las calles  -->
+    <h4>Ruta:</h4>
     <ul>
-        <c:forEach var="calle" items="${bus.ruta.calles}">
-            <li>${calle.nombreCalle}</li>
+        <c:forEach var="calle" items="${viaje.ruta.calles}">
+            <li>${calle.nombre}</li>
         </c:forEach>
     </ul>
 

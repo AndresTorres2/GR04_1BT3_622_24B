@@ -14,10 +14,11 @@ public class ViajeDAO extends GenericDAO{
     public List<Object[]> listarViajesPorJornada(String jornada) {
         List<Object[]> resultList = new ArrayList<>();
         try {
-            String sql = "SELECT DISTINCT v.id, v.horaDeSalida, r.origen, r.destino " +
+            String sql = "SELECT DISTINCT v.horaDeSalida, r.origen, r.destino, (SELECT GROUP_CONCAT(v2.id)  " +
+                    "FROM Viajes v2 WHERE v2.idRuta = v.idRuta) AS idViajes " +
                     "FROM Viajes v " +
                     "JOIN Rutas r ON v.idRuta = r.id " +
-                    "WHERE v.jornada = :jornada "+
+                    "WHERE v.jornada = :jornada " +
                     "AND v.idRuta IN ( " +
                     "    SELECT DISTINCT idRuta " +
                     "    FROM Viajes " +

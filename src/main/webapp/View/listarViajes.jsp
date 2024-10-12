@@ -421,10 +421,10 @@
         <c:forEach var="viaje" items="${viajes}">
             <div class="card">
                <div>
-                   <h3>${viaje[2]} ➜ ${viaje[3]}</h3>
-                   <p>Hora de Salida: ${viaje[1]}</p>
+                   <h3>${viaje[1]} ➜ ${viaje[2]}</h3>
+                   <p>Hora de Salida: ${viaje[0]}</p>
                </div>
-                <a href="${pageContext.request.contextPath}/ViajeServlet?ruta=verDetalles&id=${viaje[0]}">Ver detalles</a>
+                <a href="${pageContext.request.contextPath}/ViajeServlet?ruta=verDetalles&ids=${viaje[3]}">Ver detalles</a>
             </div>
         </c:forEach>
     </div>

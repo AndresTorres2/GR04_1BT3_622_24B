@@ -79,7 +79,7 @@ public class ReservaController extends HttpServlet {
             Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
             Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId(idEstudiante);
 
-            if (bus.getCapacidad() > bus.getAsientosOcupados()) {
+            if (bus.getCapacidad() > bus.getCapacidad()) {
                 String[] dias = request.getParameterValues("diasReservados");
 
                 Reserva reserva = new Reserva();

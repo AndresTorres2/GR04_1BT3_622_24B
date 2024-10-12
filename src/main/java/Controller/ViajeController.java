@@ -36,20 +36,45 @@ public class ViajeController extends HttpServlet {
         if (jornada != null && !jornada.isEmpty()) {
             viajes = viajeDAO.listarViajesPorJornada(jornada);
         }
+        for (Object[] viaje : viajes) {
+            System.out.println("Viaje:");
+            for (Object campo : viaje) {
+                System.out.println(" - " + campo);
+            }
+        }
         req.setAttribute("viajes", viajes);
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarViajes.jsp");
         dispatcher.forward(req, resp);
     }
 
     public void verDetallesViaje(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-        int idViaje = Integer.parseInt(req.getParameter("id"));
-        Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViaje);
+        String idsViaje = req.getParameter("ids");
+        List<Integer> idViajesList = new ArrayList<>();
+
+        if (idsViaje != null && !idsViaje.isEmpty()) {
+
+            String[] idArray = idsViaje.split(",");
+
+
+            for (String id : idArray) {
+                try {
+
+                    idViajesList.add(Integer.parseInt(id.trim()));
+                } catch (NumberFormatException e) {
+
+                    System.out.println("Error al convertir el ID: " + id);
+                }
+            }
+        }
+
+        Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViajesList.get(0));
 
         Ruta ruta = viaje.getRuta();
         int idRuta= ruta.getIdRuta();
         List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
         ruta.setCalles(listaCalles);
-
+        System.out.println("tamanio de calle"+ ruta.getCalles().size());
+        req.setAttribute("idViajes", idViajesList);
         req.setAttribute("viaje", viaje);
         req.setAttribute("ruta", ruta);
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/detallesViaje.jsp");

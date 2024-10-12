@@ -33,16 +33,20 @@ public class Viaje implements Serializable {
     @Column(name = "jornada", nullable = false, length = 20)
     private String jornada;
 
+    @Column(name = "asientosOcupados")
+    private int asientosOcupados;
+
     public Viaje() {
     }
 
-    public Viaje(int idViaje, Bus bus, Date fecha, Time horaDeSalida, Ruta ruta, String jornada) {
+    public Viaje(int idViaje, Bus bus, Date fecha, Time horaDeSalida, Ruta ruta, String jornada, int asientosOcupados) {
         this.idViaje = idViaje;
         this.bus = bus;
         this.fecha = fecha;
         this.horaDeSalida = horaDeSalida;
         this.ruta = ruta;
         this.jornada = jornada;
+        this.asientosOcupados =  asientosOcupados;
     }
 
     public int getIdViaje() {
@@ -91,5 +95,13 @@ public class Viaje implements Serializable {
 
     public void setJornada(String jornada) {
         this.jornada = jornada;
+    }
+
+    public int getAsientosOcupados() {
+        return asientosOcupados;
+    }
+
+    public void setAsientosOcupados(int asientosOcupados) {
+        this.asientosOcupados = asientosOcupados;
     }
 }

@@ -42,7 +42,7 @@ public class BusDAO extends GenericDAO {
     public void actualizarAsientosOcupados(Bus bus) {
         try {
             beginTransaction();
-            bus.setAsientosOcupados(bus.getAsientosOcupados() + 1); // Incrementar asientos ocupados
+            //bus.setAsientosOcupados(bus.getAsientosOcupados() + 1); // Incrementar asientos ocupados
             em.merge(bus); // Actualiza el bus en la base de datos
             commitTransaction();
         } catch (Exception e) {
