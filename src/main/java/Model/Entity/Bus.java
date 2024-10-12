@@ -16,8 +16,6 @@ public class Bus implements Serializable {
     @Column(name = "capacidad")
     private int capacidad;
 
-
-
     public Bus() {
     }
 

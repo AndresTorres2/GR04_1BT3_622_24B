@@ -3,7 +3,6 @@ package Model.Entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "reserva")
@@ -13,37 +12,37 @@ public class Reserva implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_reserva")
-    private int idReserva;
+    @Column(name = "id")
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "viajeId", nullable = false)
     private Viaje viaje;
 
     @ManyToOne
-    @JoinColumn(name = "estudiante_id", nullable = false)
+    @JoinColumn(name = "estudianteId", nullable = false)
     private Estudiante estudiante;
 
-    @Column(name = "fecha_reserva", nullable = false)
-    private Date fechaReserva;
+    @Column(name = "fecha", nullable = false)
+    private Date fecha;
 
 
     public Reserva() {
     }
 
-    public Reserva(int idReserva, Viaje viaje, Estudiante estudiante, Date fechaReserva, List<String> diasReservados) {
-        this.idReserva = idReserva;
+    public Reserva(int id, Viaje viaje, Estudiante estudiante, Date fecha) {
+        this.id = id;
         this.viaje = viaje;
         this.estudiante = estudiante;
-        this.fechaReserva = fechaReserva;
+        this.fecha = fecha;
     }
 
-    public int getIdReserva() {
-        return idReserva;
+    public int getId() {
+        return id;
     }
 
-    public void setIdReserva(int idReserva) {
-        this.idReserva = idReserva;
+    public void setId(int idReserva) {
+        this.id = idReserva;
     }
 
     public Viaje getViaje() {
@@ -62,12 +61,12 @@ public class Reserva implements Serializable {
         this.estudiante = estudiante;
     }
 
-    public Date getFechaReserva() {
-        return fechaReserva;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaReserva(Date fechaReserva) {
-        this.fechaReserva = fechaReserva;
+    public void setFecha(Date fechaReserva) {
+        this.fecha = fechaReserva;
     }
 
 }

@@ -17,7 +17,7 @@ public class BusDAO extends GenericDAO {
 
             String sql = "SELECT b.horario, b.capacidad, r.origen, r.destino , b.codigo " +
                     "FROM Bus b " +
-                    "JOIN Ruta r ON b.ruta_id = r.idRuta " +
+                    "JOIN Ruta r ON b.rutaId = r.rutaId " +
                     "WHERE b.jornada = :jornada";
 
             Query query = em.createNativeQuery(sql);

@@ -12,8 +12,8 @@ public class CalleDAO extends GenericDAO{
         try {
             String sql = "SELECT c.id, c.nombre " +
                     "FROM rutas_calles rc " +
-                    "JOIN calles c ON rc.idCalle = c.id " +
-                    "WHERE rc.idRuta = :rutaId";
+                    "JOIN calles c ON rc.calleId = c.id " +
+                    "WHERE rc.rutaId = :rutaId";
 
             Query query = em.createNativeQuery(sql);
             query.setParameter("rutaId", rutaId);

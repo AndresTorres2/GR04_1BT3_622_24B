@@ -15,12 +15,12 @@ public class ViajeDAO extends GenericDAO{
         List<Object[]> resultList = new ArrayList<>();
         try {
             String sql = "SELECT DISTINCT v.horaDeSalida, r.origen, r.destino, (SELECT GROUP_CONCAT(v2.id)  " +
-                    "FROM Viajes v2 WHERE v2.idRuta = v.idRuta AND v2.jornada = :jornada ) AS idViajes " +
+                    "FROM Viajes v2 WHERE v2.rutaId = v.rutaId AND v2.jornada = :jornada ) AS idViajes " +
                     "FROM Viajes v " +
-                    "JOIN Rutas r ON v.idRuta = r.id " +
+                    "JOIN Rutas r ON v.rutaId = r.id " +
                     "WHERE v.jornada = :jornada " +
-                    "AND v.idRuta IN ( " +
-                    "    SELECT DISTINCT idRuta " +
+                    "AND v.rutaId IN ( " +
+                    "    SELECT DISTINCT rutaId " +
                     "    FROM Viajes " +
                     "    WHERE jornada = :jornada " +
                     ") " +

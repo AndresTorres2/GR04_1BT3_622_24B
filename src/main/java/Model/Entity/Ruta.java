@@ -13,7 +13,7 @@ public class Ruta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int idRuta;
+    private int id;
 
     @Column(name = "origen", nullable = false)
     private String origen;
@@ -24,27 +24,27 @@ public class Ruta implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "rutas_calles",
-            joinColumns = @JoinColumn(name = "idRuta"),
-            inverseJoinColumns = @JoinColumn(name = "idCalle")
+            joinColumns = @JoinColumn(name = "rutaId"),
+            inverseJoinColumns = @JoinColumn(name = "calleId")
     )
     private List<Calle> calles = new ArrayList<>();
 
     public Ruta() {
     }
 
-    public Ruta(int idRuta, String origen, String destino, List<Calle> calles) {
-        this.idRuta = idRuta;
+    public Ruta(int id, String origen, String destino, List<Calle> calles) {
+        this.id = id;
         this.origen = origen;
         this.destino = destino;
         this.calles = calles;
     }
 
-    public int getIdRuta() {
-        return idRuta;
+    public int getId() {
+        return id;
     }
 
-    public void setIdRuta(int idRuta) {
-        this.idRuta = idRuta;
+    public void setId(int idRuta) {
+        this.id = idRuta;
     }
 
     public String getOrigen() {

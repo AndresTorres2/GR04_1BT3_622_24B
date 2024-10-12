@@ -7,8 +7,6 @@ import Model.DAO.ViajeDAO;
 import Model.Entity.Bus;
 import Model.Entity.Reserva;
 import Model.Entity.Estudiante;
-import Model.Entity.Viaje;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -85,7 +83,7 @@ public class ReservaController extends HttpServlet {
                 Reserva reserva = new Reserva();
                 //reserva.setViaje(viaje);
                 reserva.setEstudiante(estudiante);
-                reserva.setFechaReserva(new Date(System.currentTimeMillis()));
+                reserva.setFecha(new Date(System.currentTimeMillis()));
                 //reserva.setDiasReservados(List.of(dias));
 
                 reservaDAO.guardarReserva(reserva);

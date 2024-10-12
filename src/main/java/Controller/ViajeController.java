@@ -7,7 +7,6 @@ import java.util.List;
 import Model.DAO.BusDAO;
 import Model.DAO.CalleDAO;
 import Model.DAO.ViajeDAO;
-import Model.Entity.Bus;
 import Model.Entity.Calle;
 import Model.Entity.Ruta;
 import Model.Entity.Viaje;
@@ -71,7 +70,7 @@ public class ViajeController extends HttpServlet {
         Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViajesList.get(0));
 
         Ruta ruta = viaje.getRuta();
-        int idRuta= ruta.getIdRuta();
+        int idRuta= ruta.getId();
         List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
         ruta.setCalles(listaCalles);
         System.out.println("tamanio de calle"+ ruta.getCalles().size());

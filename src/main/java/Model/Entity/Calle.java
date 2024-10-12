@@ -17,22 +17,33 @@ public class Calle implements Serializable {
     @Column(name = "nombre", unique = true, nullable = false)
     private String nombre;
 
+    @ManyToOne
+    @JoinColumn(name = "ubicacionId", nullable = false)
+    private Ubicacion ubicacion;
+
     public Calle() {
     }
 
-    public Calle(int id, String nombre) {
+    public Calle(int id, String nombre, Ubicacion ubicacion) {
         this.id = id;
         this.nombre = nombre;
+        this.ubicacion = ubicacion;
     }
-
-    // Getters y Setters
 
     public int getId() {
         return id;
     }
 
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getNombre() {

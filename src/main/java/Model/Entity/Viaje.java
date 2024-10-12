@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "Viajes")
+@Table(name = "viajes")
 public class Viaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,7 +14,7 @@ public class Viaje implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int idViaje;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "busId", nullable = false)
@@ -27,7 +27,7 @@ public class Viaje implements Serializable {
     private Time horaDeSalida;
 
     @ManyToOne
-    @JoinColumn(name = "idRuta", nullable = false)
+    @JoinColumn(name = "rutaId", nullable = false)
     private Ruta ruta;
 
     @Column(name = "jornada", nullable = false, length = 20)
@@ -39,8 +39,8 @@ public class Viaje implements Serializable {
     public Viaje() {
     }
 
-    public Viaje(int idViaje, Bus bus, Date fecha, Time horaDeSalida, Ruta ruta, String jornada, int asientosOcupados) {
-        this.idViaje = idViaje;
+    public Viaje(int id, Bus bus, Date fecha, Time horaDeSalida, Ruta ruta, String jornada, int asientosOcupados) {
+        this.id = id;
         this.bus = bus;
         this.fecha = fecha;
         this.horaDeSalida = horaDeSalida;
@@ -49,12 +49,12 @@ public class Viaje implements Serializable {
         this.asientosOcupados =  asientosOcupados;
     }
 
-    public int getIdViaje() {
-        return idViaje;
+    public int getId() {
+        return id;
     }
 
-    public void setIdViaje(int idViaje) {
-        this.idViaje = idViaje;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Bus getBus() {

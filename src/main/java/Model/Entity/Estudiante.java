@@ -23,17 +23,17 @@ public class Estudiante implements Serializable {
     private String email;
 
     @Column(name = "phone", unique = true, nullable = false)
-    private String telefono;
+    private String phone;
 
     public Estudiante() {
     }
 
-    public Estudiante(String idEstudiante, String nombre, String apellido, String email, String telefono) {
+    public Estudiante(String idEstudiante, String nombre, String apellido, String email, String phone) {
         this.idEstudiante = idEstudiante;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.telefono = telefono;
+        this.phone = phone;
     }
 
     public String getIdEstudiante() {
@@ -68,11 +68,11 @@ public class Estudiante implements Serializable {
         this.email = email;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPhone(String telefono) {
+        this.phone = telefono;
     }
 }
