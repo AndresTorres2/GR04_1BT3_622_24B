@@ -76,17 +76,17 @@ public class ReservaController extends HttpServlet {
             int idBus = Integer.parseInt(request.getParameter("busId"));
             int idEstudiante = Integer.parseInt(request.getParameter("idEstudiante"));
             Bus bus = busDAO.obtenerBusPorCodigo(idBus);
-            Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
+            //Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
             Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId(idEstudiante);
 
             if (bus.getCapacidad() > bus.getCapacidad()) {
                 String[] dias = request.getParameterValues("diasReservados");
 
                 Reserva reserva = new Reserva();
-                reserva.setViaje(viaje);
+                //reserva.setViaje(viaje);
                 reserva.setEstudiante(estudiante);
                 reserva.setFechaReserva(new Date(System.currentTimeMillis()));
-                reserva.setDiasReservados(List.of(dias));
+                //reserva.setDiasReservados(List.of(dias));
 
                 reservaDAO.guardarReserva(reserva);
 

@@ -43,15 +43,15 @@ public class BusController extends HttpServlet {
 
     public void verDetallesBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
         int idBus = Integer.parseInt(req.getParameter("id"));
-        Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
+        //Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
 
-        Ruta ruta = viaje.getRuta();
-        int idRuta= ruta.getIdRuta();
-        List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
-        ruta.setCalles(listaCalles);
+        //Ruta ruta = viaje.getRuta();
+        //int idRuta= ruta.getIdRuta();
+        //List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
+        //ruta.setCalles(listaCalles);
 
-        req.setAttribute("viaje", viaje);
-        req.setAttribute("ruta", ruta);
+        //req.setAttribute("viaje", viaje);
+        //req.setAttribute("ruta", ruta);
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/detallesViaje.jsp");
         dispatcher.forward(req, resp);
 

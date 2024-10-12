@@ -27,10 +27,6 @@ public class Reserva implements Serializable {
     @Column(name = "fecha_reserva", nullable = false)
     private Date fechaReserva;
 
-    @ElementCollection
-    @CollectionTable(name = "reserva_dias", joinColumns = @JoinColumn(name = "reserva_id"))
-    @Column(name = "dia")
-    private List<String> diasReservados;
 
     public Reserva() {
     }
@@ -40,7 +36,6 @@ public class Reserva implements Serializable {
         this.viaje = viaje;
         this.estudiante = estudiante;
         this.fechaReserva = fechaReserva;
-        this.diasReservados = diasReservados;
     }
 
     public int getIdReserva() {
@@ -75,11 +70,4 @@ public class Reserva implements Serializable {
         this.fechaReserva = fechaReserva;
     }
 
-    public List<String> getDiasReservados() {
-        return diasReservados;
-    }
-
-    public void setDiasReservados(List<String> diasReservados) {
-        this.diasReservados = diasReservados;
-    }
 }
