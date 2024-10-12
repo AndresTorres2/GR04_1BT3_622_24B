@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,19 +47,19 @@
 <body>
 <div class="container">
   <h1>Detalles de la Reserva</h1>
-  <h2>Día seleccionado: ${dia}</h2>
-  <h2>Jornada: ${reserva.bus.jornada}</h2>
-  <h2>Bus #${reserva.bus.codigo}</h2>
-  <h3>Fecha de la reserva: ${reserva.fechaReserva}</h3>
-  <h4>Horario: ${reserva.bus.horario}</h4>
+  <h2>Día: <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/></h2>
+  <h2>Jornada: ${reserva.viaje.jornada}</h2>
+  <h2>Bus #${reserva.viaje.bus.id}</h2>
+  <h3>Fecha de la reserva: ${reserva.fecha}</h3>
+  <h4>Horario: ${reserva.viaje.horaDeSalida}</h4>
   <h4>Ruta:</h4>
   <ul>
-    <li><strong>Desde:</strong> ${reserva.bus.ruta.origen}</li>
-    <li><strong>Hasta:</strong> ${reserva.bus.ruta.destino}</li>
+    <li><strong>Desde:</strong> ${reserva.viaje.ruta.origen}</li>
+    <li><strong>Hasta:</strong> ${reserva.viaje.ruta.destino}</li>
   </ul>
   <p><strong>Recorrido: </strong>
-    <c:forEach var="calle" items="${reserva.bus.ruta.calles}" varStatus="status">
-      ${calle.nombreCalle}
+    <c:forEach var="calle" items="${reserva.viaje.ruta.calles}" varStatus="status">
+      ${calle.nombre}
       <c:if test="${!status.last}">, </c:if>
     </c:forEach>
   </p>
@@ -66,10 +67,11 @@
   <p><strong>Nombre del estudiante:</strong> ${reserva.estudiante.nombre} ${reserva.estudiante.apellido}</p> <!-- Nombre y apellido del estudiante -->
   <p><strong>Correo del estudiante:</strong> ${reserva.estudiante.email}</p>
 
-  <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=cancelarReserva&idReserva=${reserva.idReserva}&dia=${dia}"
+  <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=cancelarReserva&reservaId=${reserva.id}"
      onclick="return confirm('¿Está seguro de que desea cancelar la reserva?');">
     Cancelar Reserva
   </a>
+  <a href="javascript:history.back();" class="tab">Regresar a Reservas</a>
 </div>
 </body>
 </html>

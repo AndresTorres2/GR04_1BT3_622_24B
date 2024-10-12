@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +50,10 @@
       margin-bottom: 15px;
       width: 80%;
     }
+    a{
+      text-decoration: none;
+      color: #dcdcdc;
+    }
   </style>
 </head>
 <body>
@@ -56,22 +61,23 @@
   <h1>Consultar Reservas</h1>
 
   <div class="tabs">
-    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=Lunes">Lunes</a>
-    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=Martes">Martes</a>
-    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=Miercoles">Miércoles</a>
-    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=Jueves">Jueves</a>
-    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=Viernes">Viernes</a>
+    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=1">Lunes</a>
+    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=2">Martes</a>
+    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=3">Miércoles</a>
+    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=4">Jueves</a>
+    <a class="tab" href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=verReservasDia&dia=5">Viernes</a>
   </div>
 
-  <h2>Reservas para el día: ${dia}</h2>
-
   <c:forEach var="reserva" items="${reservas}">
+    <h2>Reservas para el día: <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/></h2>
     <div class="reserva">
-      <p><strong>Bus #${reserva.bus.codigo}</strong></p>
-      <p>Fecha de la reserva: ${reserva.fechaReserva}</p>
-      <p>Horario: ${reserva.bus.horario} (${reserva.bus.jornada})</p>
-      <p>Ruta: Desde ${reserva.bus.ruta.origen} hasta ${reserva.bus.ruta.destino}</p>
-      <p>Nombre del estudiante: ${reserva.estudiante.nombre} ${reserva.estudiante.apellido}</p>
+      <a  href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=detalleReserva&reservaId=${reserva.id}">
+        <p><strong>Viaje #${reserva.viaje.id}</strong></p>
+        <p>Fecha de la reserva: <fmt:formatDate value="${reserva.fecha}" pattern="yyyy-MM-dd"/></p>
+        <p>Horario: ${reserva.viaje.horaDeSalida} (${reserva.viaje.jornada})</p>
+        <p>Ruta: Desde ${reserva.viaje.ruta.origen} hasta ${reserva.viaje.ruta.destino}</p>
+        <p>Nombre del estudiante: ${reserva.estudiante.nombre} ${reserva.estudiante.apellido}</p>
+      </a>
     </div>
   </c:forEach>
 
