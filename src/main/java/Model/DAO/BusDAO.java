@@ -10,6 +10,7 @@ public class BusDAO extends GenericDAO {
     public BusDAO() {
         super();
     }
+
     public List<Object[]> listarBusesPorJornada(String jornada) {
         List<Object[]> resultList = new ArrayList<>();
         try {

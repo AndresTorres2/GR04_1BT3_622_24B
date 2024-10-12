@@ -2,36 +2,44 @@ package Model.Entity;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+
 @Entity
-@Table(name = "calle")
+@Table(name = "calles")
 public class Calle implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idCalle;
-    @Column(unique = true, nullable = false)
-    private String nombreCalle;
-    public Calle(){
+    @Column(name = "id")
+    private int id;
 
-    }
-    public Calle(int idCalle, String nombreCalle){
-        this.idCalle = idCalle;
-        this.nombreCalle = nombreCalle;
+    @Column(name = "nombre", unique = true, nullable = false)
+    private String nombre;
+
+    public Calle() {
     }
 
-    public int getIdCalle() {
-        return idCalle;
+    public Calle(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
-    public void setIdCalle(int idCalle) {
-        this.idCalle = idCalle;
+    // Getters y Setters
+
+    public int getId() {
+        return id;
     }
 
-    public String getNombreCalle() {
-        return nombreCalle;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNombreCalle(String nombreCalle) {
-        this.nombreCalle = nombreCalle;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

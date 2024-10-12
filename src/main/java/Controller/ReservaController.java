@@ -3,9 +3,11 @@ package Controller;
 import Model.DAO.BusDAO;
 import Model.DAO.ReservaDAO;
 import Model.DAO.EstudianteDAO;
+import Model.DAO.ViajeDAO;
 import Model.Entity.Bus;
 import Model.Entity.Reserva;
 import Model.Entity.Estudiante;
+import Model.Entity.Viaje;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -20,6 +22,8 @@ public class ReservaController extends HttpServlet {
     private ReservaDAO reservaDAO;
     private BusDAO busDAO;
     private EstudianteDAO estudianteDAO;
+    private ViajeDAO viajeDAO;
+
 
     public void init() {
         reservaDAO = new ReservaDAO();
@@ -71,15 +75,15 @@ public class ReservaController extends HttpServlet {
         try {
             int idBus = Integer.parseInt(request.getParameter("busId"));
             int idEstudiante = Integer.parseInt(request.getParameter("idEstudiante"));
-
             Bus bus = busDAO.obtenerBusPorCodigo(idBus);
+            Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
             Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId(idEstudiante);
 
             if (bus.getCapacidad() > bus.getAsientosOcupados()) {
                 String[] dias = request.getParameterValues("diasReservados");
 
                 Reserva reserva = new Reserva();
-                reserva.setBus(bus);
+                reserva.setViaje(viaje);
                 reserva.setEstudiante(estudiante);
                 reserva.setFechaReserva(new Date(System.currentTimeMillis()));
                 reserva.setDiasReservados(List.of(dias));
@@ -90,10 +94,10 @@ public class ReservaController extends HttpServlet {
                 busDAO.actualizarAsientosOcupados(bus);
 
                 // Redirigir a la lista de buses
-                response.sendRedirect(request.getContextPath() + "/View/listarBus.jsp");
+                response.sendRedirect(request.getContextPath() + "/View/listarViajes.jsp");
             } else {
                 // Redirigir igualmente si no hay asientos disponibles
-                response.sendRedirect(request.getContextPath() + "/View/listarBus.jsp");
+                response.sendRedirect(request.getContextPath() + "/View/listarViajes.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();

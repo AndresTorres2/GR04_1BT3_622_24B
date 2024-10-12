@@ -4,25 +4,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
+
 @Entity
-@Table(name = "ruta")
+@Table(name = "rutas")
 public class Ruta implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int idRuta;
+
+    @Column(name = "origen", nullable = false)
     private String origen;
+
+    @Column(name = "destino", nullable = false)
     private String destino;
+
     @ManyToMany
     @JoinTable(
-            name = "ruta_calle",
-            joinColumns = @JoinColumn(name = "ruta_id"),
-            inverseJoinColumns = @JoinColumn(name = "calle_id")
+            name = "rutas_calles",
+            joinColumns = @JoinColumn(name = "idRuta"),
+            inverseJoinColumns = @JoinColumn(name = "idCalle")
     )
     private List<Calle> calles = new ArrayList<>();
 
     public Ruta() {
     }
+
     public Ruta(int idRuta, String origen, String destino, List<Calle> calles) {
         this.idRuta = idRuta;
         this.origen = origen;

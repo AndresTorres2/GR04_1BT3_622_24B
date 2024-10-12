@@ -2,43 +2,42 @@ package Model.Entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.sql.*;
+import java.sql.Date;
 import java.util.List;
-import Model.Entity.Estudiante;
 
 @Entity
 @Table(name = "reserva")
 public class Reserva implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_reserva")
     private int idReserva;
 
     @ManyToOne
-    @JoinColumn(name = "bus_id", nullable = false)
-    private Bus bus;
+    @JoinColumn(name = "viajeId", nullable = false)
+    private Viaje viaje;
 
     @ManyToOne
-    @JoinColumn(name = "estudiante_id", nullable = false) // Clave foránea
+    @JoinColumn(name = "estudiante_id", nullable = false)
     private Estudiante estudiante;
 
-    @Column(name = "fecha_reserva")
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_reserva", nullable = false)
     private Date fechaReserva;
 
-    // Nueva propiedad para almacenar los días de la reserva
     @ElementCollection
     @CollectionTable(name = "reserva_dias", joinColumns = @JoinColumn(name = "reserva_id"))
     @Column(name = "dia")
-    private List<String> diasReservados;  // Usamos String para almacenar los días ("Lunes", "Martes", etc.)
+    private List<String> diasReservados;
 
     public Reserva() {
     }
 
-    public Reserva(int idReserva, Bus bus, Estudiante estudiante, Date fechaReserva, List<String> diasReservados) {
+    public Reserva(int idReserva, Viaje viaje, Estudiante estudiante, Date fechaReserva, List<String> diasReservados) {
         this.idReserva = idReserva;
-        this.bus = bus;
+        this.viaje = viaje;
         this.estudiante = estudiante;
         this.fechaReserva = fechaReserva;
         this.diasReservados = diasReservados;
@@ -52,12 +51,12 @@ public class Reserva implements Serializable {
         this.idReserva = idReserva;
     }
 
-    public Bus getBus() {
-        return bus;
+    public Viaje getViaje() {
+        return viaje;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public void setViaje(Viaje viaje) {
+        this.viaje = viaje;
     }
 
     public Estudiante getEstudiante() {

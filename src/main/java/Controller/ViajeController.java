@@ -16,34 +16,34 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "BusServlet", value = "/BusServlet")
-public class BusController extends HttpServlet {
-    private String message;
-    private BusDAO busDAO;
+@WebServlet(name = "ViajeServlet", value = "/ViajeServlet")
+public class ViajeController extends HttpServlet {
     private CalleDAO calleDAO;
     private ViajeDAO viajeDAO;
+    private BusDAO busDAO;
 
     public void init() {
-
-        busDAO =  new BusDAO();
+        viajeDAO =  new ViajeDAO();
         calleDAO = new CalleDAO();
+        busDAO = new BusDAO();
     }
 
-    public void listarBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+    public void listarViajes(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
         String jornada = req.getParameter("jornada");
-        List<Object[]> buses = new ArrayList<>();
+        System.out.println("Jornada recibida: " + jornada);
+        List<Object[]> viajes = new ArrayList<>();
 
         if (jornada != null && !jornada.isEmpty()) {
-            buses = busDAO.listarBusesPorJornada(jornada);
+            viajes = viajeDAO.listarViajesPorJornada(jornada);
         }
-        req.setAttribute("buses", buses);
+        req.setAttribute("viajes", viajes);
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarViajes.jsp");
         dispatcher.forward(req, resp);
     }
 
-    public void verDetallesBus(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
-        int idBus = Integer.parseInt(req.getParameter("id"));
-        Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
+    public void verDetallesViaje(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+        int idViaje = Integer.parseInt(req.getParameter("id"));
+        Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViaje);
 
         Ruta ruta = viaje.getRuta();
         int idRuta= ruta.getIdRuta();
@@ -59,7 +59,6 @@ public class BusController extends HttpServlet {
     }
 
 
-
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.ruteador(req, resp);
     }
@@ -71,13 +70,13 @@ public class BusController extends HttpServlet {
         String ruta = (req.getParameter("ruta") == null)? "listarCliente": req.getParameter("ruta");
         switch (ruta) {
             case "seleccionarJornada":
-                this.listarBus(req, resp);
+                this.listarViajes(req, resp);
                 break;
             case "verDetalles":
-                this.verDetallesBus(req, resp);
+                this.verDetallesViaje(req, resp);
                 break;
-                default:
-                    break;
+            default:
+                break;
 
         }
 

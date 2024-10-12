@@ -22,8 +22,8 @@ public class CalleDAO extends GenericDAO{
 
             for (Object[] result : resultList) {
                 Calle calle = new Calle();
-                calle.setIdCalle((Integer) result[0]);
-                calle.setNombreCalle((String) result[1]);
+                calle.setId((Integer) result[0]);
+                calle.setNombre((String) result[1]);
                 calles.add(calle);
             }
         } catch (Exception e) {

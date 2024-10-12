@@ -4,29 +4,31 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Estudiante")
+@Table(name = "Estudiantes")
 public class Estudiante implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idEstudiante;
+    @Column(name = "id")
+    private String idEstudiante;
 
-    @Column(nullable = false)
+    @Column(name = "nombres", nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(name = "apellidos", nullable = false)
     private String apellido;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "phone", unique = true, nullable = false)
     private String telefono;
 
     public Estudiante() {
     }
-    public Estudiante(int idEstudiante, String nombre, String apellido, String email, String telefono) {
+
+    public Estudiante(String idEstudiante, String nombre, String apellido, String email, String telefono) {
         this.idEstudiante = idEstudiante;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -34,11 +36,11 @@ public class Estudiante implements Serializable {
         this.telefono = telefono;
     }
 
-    public int getIdEstudiante() {
+    public String getIdEstudiante() {
         return idEstudiante;
     }
 
-    public void setIdEstudiante(int idEstudiante) {
+    public void setIdEstudiante(String idEstudiante) {
         this.idEstudiante = idEstudiante;
     }
 
