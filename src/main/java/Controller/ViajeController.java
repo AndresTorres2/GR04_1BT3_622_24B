@@ -74,7 +74,7 @@ public class ViajeController extends HttpServlet {
         List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
         ruta.setCalles(listaCalles);
         System.out.println("tamanio de calle"+ ruta.getCalles().size());
-        req.setAttribute("idViajes", idViajesList);
+        req.setAttribute("idViajes", idsViaje);
         req.setAttribute("viaje", viaje);
         req.setAttribute("ruta", ruta);
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/detallesViaje.jsp");

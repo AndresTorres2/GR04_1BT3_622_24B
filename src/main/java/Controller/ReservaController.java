@@ -7,12 +7,15 @@ import Model.DAO.ViajeDAO;
 import Model.Entity.Bus;
 import Model.Entity.Reserva;
 import Model.Entity.Estudiante;
+import Model.Entity.Viaje;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name = "ReservarAsientoServlet", value = "/ReservarAsientoServlet")
@@ -27,6 +30,7 @@ public class ReservaController extends HttpServlet {
         reservaDAO = new ReservaDAO();
         busDAO = new BusDAO();
         estudianteDAO = new EstudianteDAO();
+        viajeDAO = new ViajeDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,44 +67,90 @@ public class ReservaController extends HttpServlet {
     }
 
     private void mostrarFormularioReserva(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int busId = Integer.parseInt(request.getParameter("busId"));
+
+        String idsViajesParam = request.getParameter("idsViaje");
+        System.out.println("soy el parametro; " +idsViajesParam);
+        List<Integer> idViajesList = new ArrayList<>();
+
+        if (idsViajesParam != null && !idsViajesParam.isEmpty()) {
+
+            String[] idArray = idsViajesParam.split(",");
+
+
+            for (String id : idArray) {
+                try {
+
+                    idViajesList.add(Integer.parseInt(id.trim()));
+                } catch (NumberFormatException e) {
+
+                    System.out.println("Error al convertir el ID: " + id);
+                }
+            }
+        }
+        System.out.println("Tamanio ids: " + idViajesList.size());
+        List<Viaje> viajesList = new ArrayList<>();
+
+        // Iterar sobre la lista de IDs de viajes
+        for (Integer idViaje : idViajesList) {
+            // Obtener el objeto Viaje a partir del ID
+            Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViaje);
+            // Si se encuentra el viaje, agregarlo a la lista
+            if (viaje != null) {
+                viajesList.add(viaje);
+            } else {
+                System.out.println("No se encontró el viaje con ID: " + idViaje);
+            }
+        }
+        System.out.println("Tamanio viajes: " + idViajesList.size());
+        request.setAttribute("viajesList", viajesList);
+        request.getRequestDispatcher("/View/reservarAsiento.jsp").forward(request, response);
+
+        /*int busId = Integer.parseInt(request.getParameter("busId"));
         Bus bus = busDAO.obtenerBusPorCodigo(busId);
         request.setAttribute("bus", bus);
-        request.getRequestDispatcher("/View/reservarAsiento.jsp").forward(request, response);
+        request.getRequestDispatcher("/View/reservarAsiento.jsp").forward(request, response);*/
     }
 
-    private void guardarReserva(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int idBus = Integer.parseInt(request.getParameter("busId"));
-            int idEstudiante = Integer.parseInt(request.getParameter("idEstudiante"));
-            Bus bus = busDAO.obtenerBusPorCodigo(idBus);
-            //Viaje viaje = viajeDAO.obtenerViajePorCodigo(idBus);
-            Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId(idEstudiante);
+        private void guardarReserva(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            if (bus.getCapacidad() > bus.getCapacidad()) {
-                String[] dias = request.getParameterValues("diasReservados");
+                String[] idsViajesSeleccionados = request.getParameterValues("idsViajesSeleccionados");
+                List<Viaje> listaViajes = new ArrayList<>();
+                Estudiante estudiante = estudianteDAO.obtenerEstudiantePorId("202110777");
+                System.out.println("Soy el objeto :" +estudiante);
+                if (idsViajesSeleccionados != null) {
+                    // Convertir los IDs a enteros
+                    int[] idsViajesEnteros = Arrays.stream(idsViajesSeleccionados)
+                            .mapToInt(Integer::parseInt)
+                            .toArray();
 
-                Reserva reserva = new Reserva();
-                //reserva.setViaje(viaje);
-                reserva.setEstudiante(estudiante);
-                reserva.setFecha(new Date(System.currentTimeMillis()));
-                //reserva.setDiasReservados(List.of(dias));
+                    // Para cada ID, obtener el objeto Viaje desde el DAO y agregarlo a la lista
+                    ViajeDAO viajeDAO = new ViajeDAO();  // Asegúrate de que el DAO está correctamente inicializado
 
-                reservaDAO.guardarReserva(reserva);
+                    for (int id : idsViajesEnteros) {
+                        Viaje viaje = viajeDAO.obtenerViajePorCodigo(id); // Método para obtener el viaje por ID
+                        if (viaje != null) {  // Verificar que el viaje exista
+                            listaViajes.add(viaje);
+                        }
+                    }
 
-                // Actualiza los asientos ocupados en el bus
-                busDAO.actualizarAsientosOcupados(bus);
 
-                // Redirigir a la lista de buses
+                }
+                for (Viaje viaje : listaViajes) {
+                    // Instanciar un nuevo objeto Reserva por cada Viaje
+
+                    Reserva reserva = new Reserva(0, viaje, estudiante, viaje.getFecha());
+
+
+                    // Opcional: guardar la reserva en la base de datos usando el DAO
+
+                    reservaDAO.guardarReserva(reserva, viaje);  // Método para guardar la reserva en la base de datos
+                }
+
+
                 response.sendRedirect(request.getContextPath() + "/View/listarViajes.jsp");
-            } else {
-                // Redirigir igualmente si no hay asientos disponibles
-                response.sendRedirect(request.getContextPath() + "/View/listarViajes.jsp");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/View/reservarAsiento.jsp");
-        }
+
+
+
     }
 
 

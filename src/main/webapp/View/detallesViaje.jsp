@@ -69,7 +69,7 @@
 
     <div id="map"></div>
 
-    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=formularioReserva&busId=${viaje.id}">Realizar reserva de asiento</a>
+    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=formularioReserva&idsViaje=${idViajes}">Realizar reserva de asiento</a>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>

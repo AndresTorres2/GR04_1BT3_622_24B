@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,28 +24,23 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-size: 18px;
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
-        input[type="text"], input[type="checkbox"] {
-            margin: 5px 0 15px;
+        table, th, td {
+            border: 1px solid #dcdcdc;
+        }
+        th, td {
             padding: 10px;
-            width: calc(100% - 22px);
-            border: none;
-            border-radius: 5px;
-            background: #2e2e2e;
-            color: #dcdcdc;
+            text-align: center;
         }
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
+        th {
+            background-color: #48578e;
         }
-        .checkbox-group label {
-            font-size: 16px;
-            margin-left: 5px;
+        td {
+            background-color: #2e2e2e;
         }
         button {
             display: block;
@@ -74,26 +72,48 @@
 <body>
 <div class="container">
     <h1>Reservar Asiento</h1>
+
+    <!-- Mostrar la información de los viajes -->
     <form action="${pageContext.request.contextPath}/ReservarAsientoServlet?action=guardarReserva" method="post">
-        <input type="hidden" name="busId" value="${bus.codigo}"/>
+        <table>
+            <thead>
+            <tr>
 
-        <label for="idEstudiante">Código del Estudiante:</label>
-        <input type="text" id="idEstudiante" name="idEstudiante" placeholder="Ingresa tu código de estudiante" required/>
+                <th>Día</th>
+                <th>Fecha</th>
+                <th>Asientos Ocupados</th>
+                <th>Capacidad</th>
+                <th>Seleccionar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="viaje" items="${viajesList}">
+                <tr>
 
-        <h2>Selecciona los días de la reserva:</h2>
-        <div class="checkbox-group">
-            <label><input type="checkbox" name="diasReservados" value="Lunes"> Lunes</label>
-            <label><input type="checkbox" name="diasReservados" value="Martes"> Martes</label>
-            <label><input type="checkbox" name="diasReservados" value="Miércoles"> Miércoles</label>
-            <label><input type="checkbox" name="diasReservados" value="Jueves"> Jueves</label>
-            <label><input type="checkbox" name="diasReservados" value="Viernes"> Viernes</label>
-        </div>
+                    <td>
+                        <!-- Calcula el día de la semana basado en la fecha del viaje -->
+                        <fmt:formatDate value="${viaje.fecha}" pattern="EEEE"/>
+                    </td>
+                    <td>
+                        <!-- Muestra la fecha en formato día/mes/año -->
+                        <fmt:formatDate value="${viaje.fecha}" pattern="dd/MM/yyyy"/>
+                    </td>
+                    <td>${viaje.asientosOcupados}</td>
+                    <td>${viaje.bus.capacidad}</td>
+                    <td>
+                        <!-- Checkbox para seleccionar este viaje -->
+                        <input type="checkbox" name="idsViajesSeleccionados" value="${viaje.id}">
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
 
         <button type="submit">Realizar Reserva</button>
     </form>
 
     <div class="back-link">
-        <a href="${pageContext.request.contextPath}/BusServlet?ruta=seleccionarJornada&jornada">Volver a la lista de buses</a>
+        <a href="${pageContext.request.contextPath}/ViajeServlet?ruta=seleccionarJornada&jornada">Volver a la lista de buses</a>
     </div>
 </div>
 </body>

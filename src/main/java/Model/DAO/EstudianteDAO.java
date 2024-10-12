@@ -6,7 +6,7 @@ import jakarta.persistence.Query;
 public class EstudianteDAO extends GenericDAO {
 
     // Metodo para obtener un estudiante por su ID
-    public Estudiante obtenerEstudiantePorId(int idEstudiante) {
+    public Estudiante obtenerEstudiantePorId(String idEstudiante) {
         Estudiante estudiante = null;
         try {
             estudiante = em.find(Estudiante.class, idEstudiante);

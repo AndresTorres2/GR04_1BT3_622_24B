@@ -2,6 +2,7 @@ package Model.DAO;
 
 import Model.Entity.Reserva;
 import Model.Entity.Estudiante;
+import Model.Entity.Viaje;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,16 +14,27 @@ public class ReservaDAO extends GenericDAO {
         super();
     }
 
-    public void guardarReserva(Reserva reserva) {
+    public void guardarReserva(Reserva reserva, Viaje viaje) {
         try {
+            // Iniciar la transacción
             beginTransaction();
+
+            // Guardar la reserva
             em.persist(reserva);
+
+            // Actualizar la cantidad de asientos ocupados en el viaje
+            viaje.setAsientosOcupados(viaje.getAsientosOcupados() + 1); // Aumenta en 1 los asientos ocupados
+            em.merge(viaje); // Actualiza el viaje en la base de datos
+
+            // Confirmar la transacción
             commitTransaction();
         } catch (Exception e) {
+            // Si ocurre un error, deshacer la transacción
             rollbackTransaction();
             e.printStackTrace();
         }
     }
+
     public List<Reserva> obtenerTodasLasReservas() {
         List<Reserva> reservas = null;
         try {
