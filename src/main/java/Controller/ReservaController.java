@@ -148,7 +148,7 @@ public class ReservaController extends HttpServlet {
         List<Reserva> reservasFiltradas = new ArrayList<>();
         for (Reserva reserva : reservas) {
 
-            String diaReserva = String.valueOf(reserva.getFecha().getDay());
+            String diaReserva = String.valueOf(reserva.getViaje().getFecha().getDay());
 
             if (diaReserva.equals(diaSeleccionado)) {
                 reservasFiltradas.add(reserva);
