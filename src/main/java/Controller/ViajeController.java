@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.DAO.BusDAO;
 import Model.DAO.CalleDAO;
 import Model.DAO.ViajeDAO;
 import Model.Entity.Calle;
@@ -19,24 +18,20 @@ import jakarta.servlet.annotation.*;
 public class ViajeController extends HttpServlet {
     private CalleDAO calleDAO;
     private ViajeDAO viajeDAO;
-    private BusDAO busDAO;
 
     public void init() {
         viajeDAO = new ViajeDAO();
         calleDAO = new CalleDAO();
-        busDAO = new BusDAO();
     }
 
     public void listarViajes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String jornada = req.getParameter("jornada");
-        System.out.println("Jornada recibida: " + jornada);
         List<Object[]> viajes = new ArrayList<>();
 
         if (jornada != null && !jornada.isEmpty()) {
             viajes = viajeDAO.listarViajesPorJornada(jornada);
         }
         for (Object[] viaje : viajes) {
-            System.out.println("Viaje:");
             for (Object campo : viaje) {
                 System.out.println(" - " + campo);
             }

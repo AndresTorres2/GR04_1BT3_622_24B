@@ -17,17 +17,5 @@ public class EstudianteDAO extends GenericDAO {
     }
 
 
-    // Metodo para guardar un nuevo estudiante
-    public void guardarEstudiante(Estudiante estudiante) {
-        try {
-            beginTransaction();
-            em.persist(estudiante); // Guarda el estudiante
-            commitTransaction();
-        } catch (Exception e) {
-            rollbackTransaction();
-            e.printStackTrace();
-        }
-    }
-
 
 }

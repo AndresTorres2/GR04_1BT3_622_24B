@@ -20,14 +20,14 @@ import java.time.format.DateTimeFormatter;
 @WebServlet(name = "ReservarAsientoServlet", value = "/ReservarAsientoServlet")
 public class ReservaController extends HttpServlet {
     private ReservaDAO reservaDAO;
-    private BusDAO busDAO;
+
     private EstudianteDAO estudianteDAO;
     private ViajeDAO viajeDAO;
     private CalleDAO calleDAO;
 
     public void init() {
         reservaDAO = new ReservaDAO();
-        busDAO = new BusDAO();
+
         estudianteDAO = new EstudianteDAO();
         viajeDAO = new ViajeDAO();
         calleDAO = new CalleDAO();

@@ -28,9 +28,5 @@ public class GenericDAO {
         }
     }
 
-    public void closeEntityManager() {
-        if (em != null && em.isOpen()) {
-            em.close();
-        }
-    }
+
 }
