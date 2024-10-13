@@ -1,77 +1,175 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Detalles de la Reserva</title>
-  <style>
-    body {
-      background: #100f0f;
-      color: #dcdcdc;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      width: 80%;
-      margin: auto;
-      padding: 20px;
-      background: #1c1c1c;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      margin: 5px 0;
-    }
-    a {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-      padding: 10px;
-      background-color: #48578e;
-      color: white;
-      border-radius: 5px;
-      margin: 20px 0;
-    }
-    a:hover {
-      background-color: #71a8df;
-    }
-  </style>
+    <title>Detalles de la Reserva</title>
+    <style>
+        body {
+            background: #100f0f;
+            color: #dcdcdc;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            background-color: #48578e;
+            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            margin: 0;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #48578e;
+            color: white;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        a:hover {
+            background-color: #71a8df;
+        }
+
+        .leaflet-top, .leaflet-bottom {
+            display: none;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
 </head>
 <body>
 <div class="container">
-  <h1>Detalles de la Reserva</h1>
-  <h2>Día: <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/></h2>
-  <h2>Jornada: ${reserva.viaje.jornada}</h2>
-  <h2>Bus #${reserva.viaje.bus.id}</h2>
-  <h3>Fecha de la reserva: ${reserva.fecha}</h3>
-  <h4>Horario: ${reserva.viaje.horaDeSalida}</h4>
-  <h4>Ruta:</h4>
-  <ul>
-    <li><strong>Desde:</strong> ${reserva.viaje.ruta.origen}</li>
-    <li><strong>Hasta:</strong> ${reserva.viaje.ruta.destino}</li>
-  </ul>
-  <p><strong>Recorrido: </strong>
-    <c:forEach var="calle" items="${reserva.viaje.ruta.calles}" varStatus="status">
-      ${calle.nombre}
-      <c:if test="${!status.last}">, </c:if>
-    </c:forEach>
-  </p>
+    <h1>Detalles de la Reserva</h1>
+    <h2>Bus #${reserva.viaje.bus.id}</h2>
+    <h3>${reserva.viaje.ruta.origen} ➜ ${reserva.viaje.ruta.destino}</h3>
+    <p><strong>Fecha de viaje:</strong> <fmt:formatDate value="${reserva.viaje.fecha}"
+                                                        pattern="EEEE"/>, ${reserva.viaje.fecha}</p>
+    <p><strong>Fecha de la reserva:</strong> <fmt:formatDate value="${reserva.fecha}" pattern="EEEE"/>, ${reserva.fecha}
+    </p>
+    <p><strong>Horario:</strong> ${reserva.viaje.horaDeSalida} (${reserva.viaje.jornada})</p>
 
-  <p><strong>Nombre del estudiante:</strong> ${reserva.estudiante.nombre} ${reserva.estudiante.apellido}</p> <!-- Nombre y apellido del estudiante -->
-  <p><strong>Correo del estudiante:</strong> ${reserva.estudiante.email}</p>
 
-  <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=cancelarReserva&reservaId=${reserva.id}"
-     onclick="return confirm('¿Está seguro de que desea cancelar la reserva?');">
-    Cancelar Reserva
-  </a>
-  <a href="javascript:history.back();" class="tab">Regresar a Reservas</a>
+    <p><strong>Recorrido:</strong>
+        <c:forEach var="calle" items="${reserva.viaje.ruta.calles}" varStatus="status">
+            ${calle.nombre}
+            <c:if test="${!status.last}">, </c:if>
+        </c:forEach>
+    </p>
+
+    <p><strong>Nombre del estudiante:</strong> ${reserva.estudiante.nombre} ${reserva.estudiante.apellido}</p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%">
+        <button id="add-waypoint" style="align-items: center; display: block;">Establecer Parada</button>
+        <div style="display: flex; gap: 1rem">
+            <p>Notificar proximidad del bus</p>
+            <input type="checkbox">
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem">
+        <a href="javascript:history.back();" class="tab">Regresar a Reservas</a>
+        <a style="background: #501d1b"
+           href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=cancelarReserva&reservaId=${reserva.id}"
+           onclick="return confirm('¿Está seguro de que desea cancelar la reserva?');">
+            Cancelar Reserva
+        </a>
+    </div>
 </div>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script>
+    var map = L.map('map').setView([-0.210194, -78.489326], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+    }).addTo(map);
+
+    var waypoints = [];
+    var waypointAvailable = false;
+
+    <c:forEach var="calle" items="${callesYCoordenadas}">
+    var latitud = ${calle[2]};
+    var longitud = ${calle[3]};
+    waypoints.push(L.latLng(latitud, longitud));
+    L.marker([latitud, longitud]).addTo(map).bindPopup('${calle[1]}');
+    </c:forEach>
+
+    var routingControl = L.Routing.control({
+        waypoints: waypoints,
+        routeWhileDragging: false,
+        draggableWaypoints: false,
+        autoRoute: false,
+        editable: false,
+    }).addTo(map);
+
+    routingControl.getPlan().on('click', function (e) {
+        e.preventDefault();
+    });
+
+    routingControl.route();
+
+    var paradaIcon = L.icon({
+        iconUrl: "${pageContext.request.contextPath}/assets/paradaIcon.png",
+        iconSize: [25, 41],
+    });
+
+
+    var busIcon = L.icon({
+        iconUrl: "${pageContext.request.contextPath}/assets/busIcon.png",
+        iconSize: [40, 40],
+    });
+    L.marker([-0.332250, -78.553271], {icon: busIcon}).addTo(map);
+
+    map.on('click', function (e) {
+        if (waypointAvailable) {
+            var newWaypoint = L.latLng(e.latlng.lat, e.latlng.lng);
+            L.marker(newWaypoint, {icon: paradaIcon}).addTo(map);
+            waypointAvailable = false;
+        }
+    });
+
+    document.getElementById('add-waypoint').addEventListener('click', function () {
+        alert('Haz clic en el mapa para agregar un nuevo waypoint. Solo se podrá agregar uno.');
+        waypointAvailable = true;
+    });
+
+
+</script>
 </body>
 </html>

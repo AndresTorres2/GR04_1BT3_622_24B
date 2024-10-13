@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +10,7 @@
             color: #dcdcdc;
             font-family: Arial, sans-serif;
         }
+
         .container {
             width: 80%;
             margin: auto;
@@ -18,16 +19,20 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
+
         h1, h2 {
             text-align: center;
         }
+
         ul {
             list-style-type: none;
             padding: 0;
         }
+
         li {
             margin: 5px 0;
         }
+
         a {
             display: block;
             text-align: center;
@@ -38,17 +43,23 @@
             border-radius: 5px;
             margin: 20px 0;
         }
+
+        .leaflet-top, .leaflet-bottom {
+            display: none;
+        }
+
         a:hover {
             background-color: #71a8df;
         }
+
         #map {
             height: 600px;
             width: 100%;
             margin: 20px 0;
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
 </head>
 <body>
 <div class="container">
@@ -69,7 +80,8 @@
 
     <div id="map"></div>
 
-    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=formularioReserva&idsViaje=${idViajes}">Realizar reserva de asiento</a>
+    <a href="${pageContext.request.contextPath}/ReservarAsientoServlet?action=formularioReserva&idsViaje=${idViajes}">Realizar
+        reserva de asiento</a>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
@@ -78,31 +90,24 @@
     var map = L.map('map').setView([-0.210194, -78.489326], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
+        maxZoom: 20,
     }).addTo(map);
 
-    var origen = [-0.210194, -78.489326]; // TODO: reemplazar según viaje seleccionado
-    var destino = [-0.346586, -78.553517];
+    var waypoints = [];
 
-    L.marker(origen).addTo(map).bindPopup('${viaje.ruta.origen}').openPopup();
-    L.marker(destino).addTo(map).bindPopup('${viaje.ruta.destino}').openPopup();
-
-    var waypoints = [ //TODO: obtener coordenadas reales de las calles
-        L.latLng(-0.220428, -78.508314), // Ladrón de Guevara
-        L.latLng(-0.224660, -78.507166), // Av. Oriental (antigua)
-        L.latLng(-0.215192, -78.525153), // Av. Napo-Camal
-        L.latLng(-0.232999, -78.547424)  // El Recreo
-    ];
+    <c:forEach var="calle" items="${callesYCoordenadas}">
+    var latitud = ${calle[2]};
+    var longitud = ${calle[3]};
+    waypoints.push(L.latLng(latitud, longitud));
+    L.marker([latitud, longitud]).addTo(map).bindPopup('${calle[1]}');
+    </c:forEach>
 
     L.Routing.control({
-        waypoints: [
-            L.latLng(origen[0], origen[1]),
-            ...waypoints,
-            L.latLng(destino[0], destino[1])
-        ],
+        waypoints: waypoints,
         routeWhileDragging: true
     }).addTo(map);
 </script>
+
 
 </body>
 </html>

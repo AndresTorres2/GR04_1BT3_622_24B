@@ -22,12 +22,12 @@ public class ViajeController extends HttpServlet {
     private BusDAO busDAO;
 
     public void init() {
-        viajeDAO =  new ViajeDAO();
+        viajeDAO = new ViajeDAO();
         calleDAO = new CalleDAO();
         busDAO = new BusDAO();
     }
 
-    public void listarViajes(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+    public void listarViajes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String jornada = req.getParameter("jornada");
         System.out.println("Jornada recibida: " + jornada);
         List<Object[]> viajes = new ArrayList<>();
@@ -41,14 +41,14 @@ public class ViajeController extends HttpServlet {
                 System.out.println(" - " + campo);
             }
         }
-        req.setAttribute("jornada",jornada);
+        req.setAttribute("jornada", jornada);
         req.setAttribute("viajes", viajes);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/listarViajes.jsp");
         dispatcher.forward(req, resp);
     }
 
-    public void verDetallesViaje(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {
+    public void verDetallesViaje(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idsViaje = req.getParameter("ids");
         List<Integer> idViajesList = new ArrayList<>();
 
@@ -56,10 +56,8 @@ public class ViajeController extends HttpServlet {
 
             String[] idArray = idsViaje.split(",");
 
-
             for (String id : idArray) {
                 try {
-
                     idViajesList.add(Integer.parseInt(id.trim()));
                 } catch (NumberFormatException e) {
 
@@ -69,15 +67,23 @@ public class ViajeController extends HttpServlet {
         }
 
         Viaje viaje = viajeDAO.obtenerViajePorCodigo(idViajesList.get(0));
-
         Ruta ruta = viaje.getRuta();
-        int idRuta= ruta.getId();
+        int idRuta = ruta.getId();
+
+        List<Object[]> callesYCoordenadas = calleDAO.obtenerCallesYCoordenadasPorRutaId(idRuta);
         List<Calle> listaCalles = calleDAO.obtenerCallesPorRutaId(idRuta);
+
         ruta.setCalles(listaCalles);
-        System.out.println("tamanio de calle"+ ruta.getCalles().size());
         req.setAttribute("idViajes", idsViaje);
         req.setAttribute("viaje", viaje);
         req.setAttribute("ruta", ruta);
+        req.setAttribute("callesYCoordenadas", callesYCoordenadas);
+
+        if (!callesYCoordenadas.isEmpty()) {
+            req.setAttribute("origen", callesYCoordenadas.get(0)); // Primera calle
+            req.setAttribute("destino", callesYCoordenadas.get(callesYCoordenadas.size() - 1)); // Última calle
+        }
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("View/detallesViaje.jsp");
         dispatcher.forward(req, resp);
 
@@ -88,12 +94,13 @@ public class ViajeController extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.ruteador(req, resp);
     }
+
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.ruteador(req, resp);
     }
 
-    public void ruteador(HttpServletRequest req, HttpServletResponse resp) throws  ServletException, IOException {
-        String ruta = (req.getParameter("ruta") == null)? "listarCliente": req.getParameter("ruta");
+    public void ruteador(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String ruta = (req.getParameter("ruta") == null) ? "listarCliente" : req.getParameter("ruta");
         switch (ruta) {
             case "seleccionarJornada":
                 this.listarViajes(req, resp);
